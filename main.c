@@ -22,7 +22,8 @@ void main() {
 		scanf(" %c", &choice);
 		        
 		switch(choice) {
-			case 'A':
+			case 'A':				
+				getchar();
 				add_file();
 				break;
 			case 'B':
@@ -37,12 +38,14 @@ void main() {
 				break;
 			case 'D':
 				//search for an inventory item
+				search_item();
 				break;
 			case 'X':
 				printf("\nThank you for using the program!\nProgram now closing.");
 				break;
 			default:
-				printf("Invalid input! Please enter a valid input!\n\n");
+				printf("\nInvalid input! Please enter a valid input!\n\n");
+				system("pause");
 				break;                                                   
 		}
 	} 
