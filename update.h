@@ -4,37 +4,62 @@
 #include <ctype.h>
 #define MAX_LEN 255
 
+int old_id=0;
+
+int totalLines(){
+	int total_lines =0;
+
+	char lines[MAX_LEN];
+	FILE * fpointer = fopen("inventory.csv", "r");
+	
+	while (!feof(fpointer)){
+		if(fgets (lines, MAX_LEN, fpointer)!=NULL ) {
+			total_lines +=1;
+		}
+	}
+	fclose(fpointer);
+	return total_lines;
+}
+
 int search(){
     FILE *forig = fopen("inventory.csv", "rb");
-    //FILE *fnew = fopen("update.csv", "w");
-
-    int id_line = 0;
-    char findID[6];
+	
+    int id_line = 0,findID;
     char line[MAX_LEN];
     char *token,*IDStr;
     char *dump;
     char currentID[6];
     char checkID[6]="\"";
 
-    system("cls");
+    
     getchar();
-    printf("Input ID:");
-    fgets(findID, 6, stdin);
+    printf("\nPlease input the Item ID:");
+	scanf("%d", &findID);
+	old_id = findID;
 	getchar();
-    //printf("%s\n", findID);
-
+	
     int lineOfEntry =0;
     while(!feof(forig))
 	{
   		if( fgets (line, MAX_LEN, forig)!=NULL ) {
             
             token = strtok(line, ",");
+			remove_quotation(token);
 			lineOfEntry+=1;
-			printf("%s\n", token);
-            if(strcmp(findID, token)==0){
-                printf("Item Found!");
-                fclose(forig);
-				return lineOfEntry;
+            if(findID==atoi(token)){
+                printf("\nItem Found!\n");
+				printf("ITEM ID   ITEM DESCRIPTION    	ITEM QUANTITY   	ITEM EXPIRY DATE   	ITEM PRICE\n");
+				printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+				while(token != NULL)
+					{
+						printf("%s\t\t", token);
+						token = strtok(NULL, ",");
+					}
+						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+						printf("\t\t\t\t\t\t\t\t---------------END OF LINE---------------");
+						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                		fclose(forig);
+						return lineOfEntry;
             }
         }
     }
@@ -50,21 +75,26 @@ int search(){
     }
 }
 
-void update(){
+int update(){
 
-    int item_id = 0, item_quantity = 0, item_check;
-	char item_description[20], item_date[11], choice = 'Y';
+    int item_id = 0, item_quantity = 0, item_check, price_check = 0;
+	char item_description[255], item_date[255], char_id[255], char_quantity[255], char_price[255], choice = 'N';
 	float item_price = 0;
 
-    int lineOfEntry;
+    int lineOfEntry, countOfLines;
     char linebuffer[MAX_LEN],prevLine[MAX_LEN]="";
 	
 	FILE *originalFile = fopen("inventory.csv", "r");
 	FILE *newFile = fopen("Updated.csv", "w+");
-	
-    while(choice=='Y'){
-        lineOfEntry = search();
 
+	system("cls");
+	printf("UPDATE INVENTORY ITEM:\n");
+	
+    //while(choice=='Y'){
+		countOfLines = totalLines();
+		printf("entries: %d", countOfLines);
+        lineOfEntry = search();
+		printf("%d", lineOfEntry);
         if(lineOfEntry==0){
             printf("\nFailed to find item.\n");
             printf("The system couldn't find an item with the specified Item ID.\n");
@@ -77,134 +107,188 @@ void update(){
                 printf("\n\nInput 'X' to return to the Main Menu:");
 	            scanf(" %c", &choice); 
             }
-            break;
+			return 0;
         }
         int x=0;
-        //checkEOF=fgetc(originalFile);
 
         while(!feof(originalFile)){
             x+=1;
-		    //checkEOF=fgetc(originalFile);
-
 		    fgets(linebuffer, MAX_LEN, originalFile);
-		    //printf("Current Line is: %s\n", linebuffer);
-
+		    
+			
             if(x == lineOfEntry){
-                while ((item_id <= 9999 || item_id > 99999)) {	
-			        printf("Please input the Item ID: ");
-			        scanf(" %d", &item_id);		
-			        if (item_id <= 9999 || item_id > 99999) {
-			            printf("\nInvalid Item ID! Item ID should be 5 digit number.\n\n");
-			        }							
-			        fflush(stdin); //clear input buffer
-
-					
+				while(choice=='N'){
+                	while ((item_id <= 9999 || item_id > 99999)) {	
+						printf("Please update the Item ID: ");
+						fgets(char_id, 255, stdin);
+						item_id = atoi(char_id);
+						if ((floor(log10(abs(item_id))) + 1) == (strlen(char_id)-1)) { //evaluate if number, atoi will only take the first few integers or 0 and not character
+							if (item_id <= 9999 || item_id > 99999) {
+								printf("\nInvalid Item ID! Item ID should be a 5 digit number.\n\n");
+							}
+						} else{
+							printf("\nInvalid Item ID! Item ID should be a 5 digit number.\n\n");
+						}	
+						char_id[strcspn(char_id, "\n")] = 0;				
+						fflush(stdin); //clear input buffer
+					}	
+		        	do {
+						printf("Please update the Item Description: ");		
+						fgets(item_description, 255, stdin); //fix the newline bug later
+						if (item_description[0] != '\n') {
+							item_description[strcspn(item_description, "\n")] = 0; //remove fgets \n
+							remove_comma(item_description);
+						} else {
+							printf("\nItem description cannot be empty!\n\n");
+					}
+						fflush(stdin); //clear input buffer
+					}while (item_description[0] == '\n');
+		        	item_check = 1;
+		        	while (item_check == 1) {
+						item_check = 0;			
+						printf("Please update the Item Quantity: ");	
+						fgets(char_quantity, 255, stdin);
+						item_quantity = atoi(char_quantity);
+						if (item_quantity > 0) {				
+							if ((floor(log10(abs(item_quantity))) + 1) != (strlen(char_quantity)-1)) {
+								printf("\nInvalid Quantity! Make sure that the quantity is a number and is non-zero and non-negative.\n\n");
+								item_check = 1;
+							}
+						} else {
+							printf("\nInvalid Quantity! Make sure that the quantity is a number and is non-zero and non-negative.\n\n");
+							item_check = 1;
+						}
+						char_quantity[strcspn(char_quantity, "\n")] = 0;
+						fflush(stdin); //clear input buffer  
+					}
+		        	int dateCheck = 1;
+		        	while (dateCheck == 1) {
+						printf("Please update the Expiry Date (YYYY-MM-DD) (Place '-' if no expiry): ");		
+						fgets(item_date, 255, stdin);			
+						item_date[strcspn(item_date, "\n")] = 0; //remove fgets \n
+						if (strcmp(item_date, "-") == 0) {
+							dateCheck = 0;
+						} else {
+							if (strlen(item_date) < 10 || strlen(item_date) > 10) {
+								dateCheck = 1;
+							} else {					
+								dateCheck = date_check(item_date);
+							}				
+						}					
+						if (dateCheck == 1) {
+							printf("\nInvalid Date! Please make sure that the date follows the YYYY-MM-DD format and does not contain any invalid characters.\n\n");
+						}
+						fflush(stdin);	
+					}
+					while(item_price == 0) {	
+						do {					                                	
+							printf("Please update the Price of the Item (PHP, in TWO decimal places): ");	
+							fgets(char_price, 255, stdin);
+							if (char_price[0] == '\n') {
+								printf("\nPrice of item cannot be empty!\n\n");
+							}
+						}while(char_price[0] == '\n');		
+						char_price[strcspn(char_price, "\n")] = 0;	
+						price_check = decimal_check(char_price);
+			
+						if (price_check == 1) {
+							printf("\nInvalid Price! Make sure the the price is a non-negative, non-zero number and is in TWO decimal places.\n\n");
+						} else {				
+							item_price = atof(char_price);	
+						}
+						fflush(stdin);
+					} 		                           
+	
+		        	int item_check = id_check(item_id);
 		
-		        	if (id_check(item_id) == 1) {
-			        	printf("\nFailed to add item!\nItem with the same Item ID found!\n");
-
+		        	if (item_check == 1 && old_id != item_id) {
+			        	printf("\nFailed to add item!\nItem with the same Item ID found!");
 						printf("Input 'X' to return to the Main Menu:");
             			scanf("%c", &choice);
-
 						while(choice!='X'){
                 			printf("\nInvalid Choice.");
                 			printf("\n\nInput 'X' to return to the Main Menu:");
 	            			scanf(" %c", &choice); 
             			}
             			return 0;
-					}
-		        }		
-		        printf("Please input the Item Description: ");		
-		        fgets(item_description, 20, stdin); //fix the newline bug later
-		        item_description[strcspn(item_description, "\n")] = 0; //remove fgets \n
-		        item_check = 1;
-		        while (item_check == 1) {
-			        item_check = 0;			
-			        printf("Please input the Item Quantity: ");	
-			        scanf(" %d", &item_quantity);
-			        if (item_quantity <= 0) {
-				        printf("\nInvalid Quantity! Make sure that the quantity is a number and is non-zero and non-negative.\n\n");
-				        item_check = 1;
-				        getchar();
-			        }   
-			        fflush(stdin); //clear input buffer  
-		        }
-		        int dateCheck = 1;
-		        while (dateCheck == 1) {
-			        printf("Please input the Expiry Date (YYYY-MM-DD) (Place '-' if no expiry): ");		
-			        fgets(item_date, 11, stdin);			
-			        item_date[strcspn(item_date, "\n")] = 0; //remove fgets \n
-			        if (strcmp(item_date, "-") == 0) {
-				        dateCheck = 0;
-			        } else {
-				        if (strlen(item_date) < 10) {
-					        dateCheck = 1;
-				        } else {					
-					        dateCheck = date_check(item_date);
-				        }				
-			        }					
-			        if (dateCheck == 1) {
-				        printf("\nInvalid Date! Please make sure that the date follows the YYYY-MM-DD format and does not contain any invalid characters.\n\n");
-			        }	
-		        }
-		        while(item_price == 0) {			                                	
-			        printf("Please input the Price of the Item (PHP, in two decimal places): ");	
-			        scanf(" %f", &item_price);
-			        if (item_price <= 0) {
-				        printf("\nInvalid Price! Make sure that the price is a number and is non-zero and non-negative!\n");
-				        item_price = 0;
-			        }
-			        fflush(stdin);
-		        }  		                           
-	
-		        int item_check = id_check(item_id);
-		
-		        if (item_check == 1) {
-			        printf("\nFailed to add item!\nItem with the same Item ID found!");
-		        } else {
-				    fprintf(newFile, "%d, %s, %d, %s, %lf\n", item_id, item_description, item_quantity, item_date, item_price);
-				    //printf("PLEASE CHECK");
-			    /*int toFile = update_item(item_id, item_description, item_quantity, item_date, item_price);
-			    if (toFile > 0) {
-				    printf("\nItem successfully added!");
-			    } else {
-				    printf("\nFailed to add item!\nAn error occured while trying to add the item.");
-			    }*/
-		        }
+		        	} else {
+				    
+						printf("\nITEM UPDATE SUMMARY\n");
+						printf("ITEM ID   ITEM DESCRIPTION    	ITEM QUANTITY   	ITEM EXPIRY DATE   	ITEM PRICE\n");
+						printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+						printf("%d\t\t%s\t\t%d\t\t%s\t\t%lf", item_id, item_description, item_quantity, item_date, item_price);
+						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+						printf("\t\t\t\t\t\t\t\t---------------END OF LINE---------------");
+						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+						//getchar();
+						printf("\nAre you satisfied with the changes? Y/N:");
+						choice=getchar();
+						//printf("choice: %c", choice);
+						//getchar();
+						while(choice!='Y'){
+							if(choice=='N'){
+								//reset values
+								item_id = 0;
+								item_price = 0;
+								break;
+							}
+							printf("\nInvalid input.");
+							printf("\nAre you satisfied with the changes? Y/N:");
+							choice=getchar();
+							//printf("choice: %c", choice);
+						}
+						if(choice=='Y'){
+							//fprintf(newFile, "%d, %s, %d, %s, %lf\n", item_id, item_description, item_quantity, item_date, item_price);
+							if(x==countOfLines){
+								fprintf(newFile, "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"", char_id, item_description, char_quantity, item_date, char_price);
+							}
+							else{
+								fprintf(newFile, "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n", char_id, item_description, char_quantity, item_date, char_price);
+							}
+						}
+		        	}
+				}
             }
+			else if(x>countOfLines){
+				break;
+			}
             else{
                 if(strcmp(prevLine, linebuffer)==0){
 					break;
 				}
 				else{
+					printf("X AT Printf %d", x);
 					fputs(linebuffer, newFile);
 					strcpy(prevLine, linebuffer);
 				}
-            }
+         	}
+			//}
         }
 	    fclose(originalFile);
         fclose(newFile);
+
+        int overwriteOrigFile=rename("inventory.csv", "old.csv");
 		remove("inventory.csv");
+		remove("old.csv");
         int overwriteFile=rename("Updated.csv", "inventory.csv");
         if(!overwriteFile)
         {
-            printf("%s", "Entry Updated Succesfully\n");
-		    system("pause");
+            printf("\nEntry Updated Succesfully\n");
+			printf("Input 'X' to return to the Main Menu:");
+            scanf("%c", &choice);
+			getchar();
+				while(choice!='X'){
+            		printf("\nInvalid Choice.");
+                	printf("\n\nInput 'X' to return to the Main Menu:");
+	            	scanf(" %c", &choice); 
+            	}
         }
         else
         {
             printf("Error Updating Entry\n");
 		    system("pause");
         }
-        
-        /*printf("\n\nDo you want to add another item? Y/N: ");
-	    scanf(" %c", &choice);
-        
-        while(choice!='Y'&&choice!='N'){
-            printf("\nInvalid Choice.");
-            printf("\n\nDo you want to add another item? Y/N: ");
-	        scanf(" %c", &choice);
-        }*/
-    }
     printf("\n\n");
+
+	return 0;
 }
