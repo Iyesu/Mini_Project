@@ -10,8 +10,8 @@ void viewInventory(int option){
     //in the event of an error
 	char words[50],id[5], ch, exit; 
 	
-	system("CLS");
 	if(option==1){
+		system("CLS");
 		printf("FULL ITEM LIST: \n");
 	}
 	
