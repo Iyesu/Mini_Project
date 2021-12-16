@@ -79,7 +79,7 @@ void add_file() {
 		}
 		while(item_price == 0) {	
 			do {					                                	
-				printf("Please input the Price of the Item (PHP, 2 decimal places MAX): ");	
+				printf("Please input the Price of the Item (PHP, in TWO decimal places): ");	
 				fgets(char_price, 255, stdin);
 				if (char_price[0] == '\n') {
 					printf("\nPrice of item cannot be empty!\n\n");
@@ -89,7 +89,7 @@ void add_file() {
 			price_check = decimal_check(char_price);
 			
 			if (price_check == 1) {
-				printf("\nInvalid Price! Make sure the the price is a non-negative, non-zero number and is at a maximum of 2 decimal places.\n\n");
+				printf("\nInvalid Price! Make sure the the price is a non-negative, non-zero number and is in TWO decimal places.\n\n");
 			} else {				
 				item_price = atof(char_price);	
 			}
