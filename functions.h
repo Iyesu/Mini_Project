@@ -29,7 +29,7 @@ int push_item(char char_id[255], char item_description[255], char char_quantity[
 	int retVal = 0;
 	
 	FILE * fpointer = fopen("inventory.csv", "a");
-	retVal = fprintf(fpointer, "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n", char_id, item_description, char_quantity, item_date, char_price);
+	retVal = fprintf(fpointer, "\n\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"", char_id, item_description, char_quantity, item_date, char_price);
 	fclose(fpointer);
 	
 	return retVal;
@@ -89,7 +89,7 @@ int decimal_check(char value[255]) {
 		    }
 		}
 	}
-	if (count > 2) {
+	if (count != 2) {
 		retVal = 1;
 	}
     
