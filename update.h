@@ -20,7 +20,7 @@ int search(){
     getchar();
     printf("Input ID:");
     fgets(findID, 6, stdin);
-
+	getchar();
     printf("%s\n", findID);
     //strcat(findID, checkID);
 
@@ -43,6 +43,7 @@ int search(){
             }
         }
     }
+	lineOfEntry=0;
     fclose(forig);
 
     if(lineOfEntry==0){
@@ -61,7 +62,7 @@ void update(){
 	float item_price = 0;
 
     int lineOfEntry;
-    char linebuffer[MAX_LEN],prevLine[MAX_LEN];
+    char linebuffer[MAX_LEN],prevLine[MAX_LEN]="";
 	
 	FILE *originalFile = fopen("inventory.csv", "r");
 	FILE *newFile = fopen("Updated.csv", "w+");
@@ -101,6 +102,22 @@ void update(){
 			            printf("\nInvalid Item ID! Item ID should be 5 digit number.\n\n");
 			        }							
 			        fflush(stdin); //clear input buffer
+
+					
+		
+		        	if (id_check(item_id) == 1) {
+			        	printf("\nFailed to add item!\nItem with the same Item ID found!\n");
+
+						printf("Input 'X' to return to the Main Menu:");
+            			scanf("%c", &choice);
+
+						while(choice!='X'){
+                			printf("\nInvalid Choice.");
+                			printf("\n\nInput 'X' to return to the Main Menu:");
+	            			scanf(" %c", &choice); 
+            			}
+            			return 0;
+					}
 		        }		
 		        printf("Please input the Item Description: ");		
 		        fgets(item_description, 20, stdin); //fix the newline bug later
@@ -161,11 +178,18 @@ void update(){
 		        }
             }
             else{
-                fputs(linebuffer, newFile);
+                if(strcmp(prevLine, linebuffer)==0){
+					break;
+				}
+				else{
+					fputs(linebuffer, newFile);
+					strcpy(prevLine, linebuffer);
+				}
             }
         }
 	    fclose(originalFile);
         fclose(newFile);
+		remove("old.csv");
 	    int overwriteFileOrig=rename("inventory.csv", "old.csv");
         int overwriteFile=rename("Updated.csv", "inventory.csv");
         if(!overwriteFile)
