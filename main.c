@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "add_item.h"
 #include "viewInventory.h"
+#include "update.h"
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 void main() {
@@ -26,6 +27,7 @@ void main() {
 				break;
 			case 'B':
 				//update inventory item
+				update();
 				break;
 			case 'C':
 				//view inventory list
