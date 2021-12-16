@@ -21,12 +21,7 @@ int search(){
     printf("Input ID:");
     fgets(findID, 6, stdin);
 	getchar();
-    printf("%s\n", findID);
-    //strcat(findID, checkID);
-
-	//printf("First cat %s\n", findID);
-    //strcat(checkID, findID);
-	//printf("Second cat %s\n", checkID);
+    //printf("%s\n", findID);
 
     int lineOfEntry =0;
     while(!feof(forig))
@@ -92,7 +87,7 @@ void update(){
 		    //checkEOF=fgetc(originalFile);
 
 		    fgets(linebuffer, MAX_LEN, originalFile);
-		    printf("Current Line is: %s\n", linebuffer);
+		    //printf("Current Line is: %s\n", linebuffer);
 
             if(x == lineOfEntry){
                 while ((item_id <= 9999 || item_id > 99999)) {	
@@ -189,8 +184,7 @@ void update(){
         }
 	    fclose(originalFile);
         fclose(newFile);
-		remove("old.csv");
-	    int overwriteFileOrig=rename("inventory.csv", "old.csv");
+		remove("inventory.csv");
         int overwriteFile=rename("Updated.csv", "inventory.csv");
         if(!overwriteFile)
         {
