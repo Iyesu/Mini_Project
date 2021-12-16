@@ -189,7 +189,7 @@ int update(){
 						getchar();
 						printf("\nAre you satisfied with the changes? Y/N:");
 						scanf("%c", &choice);
-						printf("choice: %c", choice);
+						//printf("choice: %c", choice);
 						getchar();
 						while(choice!='Y'){
 							if(choice=='N'){
@@ -202,7 +202,7 @@ int update(){
 							printf("\nAre you satisfied with the changes? Y/N:");
 							scanf("%c", &choice);
 							getchar();
-							printf("choice: %c", choice);
+							//printf("choice: %c", choice);
 						}
 						if(choice=='Y'){
 							fprintf(newFile, "%d, %s, %d, %s, %lf\n", item_id, item_description, item_quantity, item_date, item_price);
@@ -223,12 +223,22 @@ int update(){
         }
 	    fclose(originalFile);
         fclose(newFile);
+
+        int overwriteOrigFile=rename("inventory.csv", "old.csv");
 		remove("inventory.csv");
+		remove("old.csv");
         int overwriteFile=rename("Updated.csv", "inventory.csv");
         if(!overwriteFile)
         {
-            printf("%s", "Entry Updated Succesfully\n");
-		    system("pause");
+            printf("\nEntry Updated Succesfully\n");
+			printf("Input 'X' to return to the Main Menu:");
+            scanf("%c", &choice);
+			getchar();
+				while(choice!='X'){
+            		printf("\nInvalid Choice.");
+                	printf("\n\nInput 'X' to return to the Main Menu:");
+	            	scanf(" %c", &choice); 
+            	}
         }
         else
         {
