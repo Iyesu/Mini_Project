@@ -12,21 +12,23 @@ void add_file() {
 	
 	while (choice == 'Y') {
 		system("CLS");	
-		item_id = 0;
 		item_price = 0;
+		item_id = 0;
 		printf("ADD INVENTORY ITEM: \n\n");	
-		while ((item_id <= 9999 || item_id > 99999)) {	
+		while ((item_id <= 9999 || item_id > 99999)) {			
 			printf("Please input the Item ID: ");
 			fgets(char_id, 255, stdin);
 			item_id = atoi(char_id);
 			if ((floor(log10(abs(item_id))) + 1) == (strlen(char_id)-1)) { //evaluate if number, atoi will only take the first few integers or 0 and not character
 				if (item_id <= 9999 || item_id > 99999) {
-					printf("\nInvalid Item ID! Item ID should be a 5 digit number.\n\n");
+					printf("\nInvalid Item ID! Item ID should be a 5 digit number.\n\n");					
+					item_id = 0; //reset item_id				
 				}
 			} else{
-				printf("\nInvalid Item ID! Item ID should be a 5 digit number.\n\n");
+				printf("\nInvalid Item ID! Item ID should be a 5 digit number.\n\n");				
+				item_id = 0; //reset item_id				
 			}	
-			char_id[strcspn(char_id, "\n")] = 0;				
+			char_id[strcspn(char_id, "\n")] = 0;
 			fflush(stdin); //clear input buffer
 		}
 		do {
