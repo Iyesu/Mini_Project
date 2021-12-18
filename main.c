@@ -38,7 +38,7 @@ void main() {
 				break;
 			case 'D':
 				//search for an inventory item
-				//search_item();
+				search_item();
 				break;
 			case 'X':
 				printf("\nThank you for using the program!\nProgram now closing.");
@@ -48,5 +48,6 @@ void main() {
 				system("pause");
 				break;                                                   
 		}
+		fflush(stdin);
 	} 
 }
