@@ -7,10 +7,11 @@
 
 void add_file() {
 	int item_id, item_quantity = 0, item_check, price_check = 0;
-	char item_description[255], item_date[255], char_id[255], char_quantity[255], char_price[255], choice = 'Y';
+	char item_description[255], item_date[255], char_id[255], char_quantity[255], char_price[255], choice[80];
 	float item_price = 0;
 	
-	while (choice == 'Y') {
+	choice[0] = 'Y';
+	while (choice[0] == 'Y') {
 		system("CLS");	
 		item_price = 0;
 		item_id = 0;
@@ -110,9 +111,21 @@ void add_file() {
 				printf("\nFailed to add item!\nAn error occured while trying to add the item.");
 			}
 		}
-		printf("\n\nDo you want to add another item? Y/N: ");
-		scanf(" %c", &choice);		
-		fflush(stdin);
+		
+		do { //evaluate user input
+			printf("\n\nDo you want to add another item? Y/N: ");
+			fgets(choice, 80, stdin);
+			choice[strcspn(choice, "\n")] = 0;
+			if (strlen(choice) == 1) {							
+				if (choice[0] != 'Y' && choice[0] != 'N') {
+					printf("\nInvalid choice! Choices are only Y/N!");
+				}
+			} else {
+				printf("\nInvalid choice! Choices are only Y/N!");
+				choice[0] = '0';
+			}			
+			fflush(stdin);	
+		}while (choice[0] != 'Y' && choice[0] != 'N');
 	}  
 	printf("\n\n");                                                                                                          
 }
