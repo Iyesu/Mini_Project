@@ -5,6 +5,7 @@
 #include "add_item.h"
 #include "viewInventory.h"
 #include "update.h"
+#include "search_item.h"
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 void main() {
@@ -35,13 +36,12 @@ void main() {
 					break;
 				case 'C':
 					//view inventory list
-					printf("I'm in.");
 					viewInventory(1);
 					getch();
 					break;
 				case 'D':
 					//search for an inventory item
-					search_item();
+					search_item();		
 					break;
 				case 'X':
 					printf("\nThank you for using the program!\nProgram now closing.");

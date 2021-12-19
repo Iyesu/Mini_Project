@@ -21,7 +21,7 @@ void remove_quotation(char value[255]) {
 	char *ptr2 = value;
 	
 	do {
-		if (*ptr >= '0' && *ptr <= '9') {
+		if (*ptr != '"') {
 			*ptr2++ = *ptr;
 		}
 	} while (*ptr++);
