@@ -89,7 +89,7 @@ int search_item(int forUpdateFunc) {
 					printf("\nInvalid choice! Please input 'X' to return to the main menu!");
 				}
 			} else {
-				printf("\nInvalid choice! Please input 'X to return to the main menu!");
+				printf("\nInvalid choice! Please input 'X' to return to the main menu!");
 				choice[0] = '0';
 			}			
 			fflush(stdin);	
