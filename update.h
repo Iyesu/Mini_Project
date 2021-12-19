@@ -31,12 +31,10 @@ int search(){
     char currentID[6];
     char checkID[6]="\"";
 
-    
-    getchar();
     printf("\nPlease input the Item ID:");
 	scanf("%d", &findID);
 	old_id = findID;
-	getchar();
+	fflush(stdin);
 	
     int lineOfEntry =0;
     while(!feof(forig))
@@ -92,7 +90,7 @@ int update(){
 	
     //while(choice=='Y'){
 		countOfLines = totalLines();
-		printf("entries: %d", countOfLines);
+		//printf("entries: %d", countOfLines);
         lineOfEntry = search();
 		printf("%d", lineOfEntry);
         if(lineOfEntry==0){
@@ -205,10 +203,12 @@ int update(){
 			        	printf("\nFailed to add item!\nItem with the same Item ID found!");
 						printf("Input 'X' to return to the Main Menu:");
             			scanf("%c", &choice);
+						fflush(stdin); 
 						while(choice!='X'){
                 			printf("\nInvalid Choice.");
                 			printf("\n\nInput 'X' to return to the Main Menu:");
 	            			scanf(" %c", &choice); 
+							fflush(stdin); 
             			}
             			return 0;
 		        	} else {
@@ -223,6 +223,7 @@ int update(){
 						//getchar();
 						printf("\nAre you satisfied with the changes? Y/N:");
 						choice=getchar();
+						fflush(stdin); 
 						//printf("choice: %c", choice);
 						//getchar();
 						while(choice!='Y'){
@@ -235,6 +236,7 @@ int update(){
 							printf("\nInvalid input.");
 							printf("\nAre you satisfied with the changes? Y/N:");
 							choice=getchar();
+							fflush(stdin); 
 							//printf("choice: %c", choice);
 						}
 						if(choice=='Y'){
@@ -257,7 +259,6 @@ int update(){
 					break;
 				}
 				else{
-					printf("X AT Printf %d", x);
 					fputs(linebuffer, newFile);
 					strcpy(prevLine, linebuffer);
 				}
@@ -273,19 +274,21 @@ int update(){
         int overwriteFile=rename("Updated.csv", "inventory.csv");
         if(!overwriteFile)
         {
-            printf("\nEntry Updated Succesfully\n");
+            printf("\nInventory Entry Updated Succesfully\n");
 			printf("Input 'X' to return to the Main Menu:");
             scanf("%c", &choice);
+			fflush(stdin); 
 			getchar();
 				while(choice!='X'){
             		printf("\nInvalid Choice.");
                 	printf("\n\nInput 'X' to return to the Main Menu:");
-	            	scanf(" %c", &choice); 
+	            	scanf(" %c", &choice);
+					fflush(stdin); 
             	}
         }
         else
         {
-            printf("Error Updating Entry\n");
+            printf("Error Updating Entry. CSV File might be open or still in use.\n");
 		    system("pause");
         }
     printf("\n\n");
