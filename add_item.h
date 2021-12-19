@@ -95,6 +95,10 @@ void add_file() {
 				printf("\nInvalid Price! Make sure the the price is a non-negative, non-zero number and is in TWO decimal places.\n\n");
 			} else {				
 				item_price = atof(char_price);	
+				if (item_price <= 0) {
+					printf("\nInvalid Price! Make sure the the price is a non-negative, non-zero number and is in TWO decimal places.\n\n");
+					item_price = 0;
+				}
 			}
 			fflush(stdin);
 		}  		                           
