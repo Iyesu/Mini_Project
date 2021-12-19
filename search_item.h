@@ -19,6 +19,7 @@ int search_item(int forUpdateFunc) {
 		while ((id <= 9999 || id > 99999)) {			
 			printf("\nPlease input the Item ID: ");
 			fgets(char_id, 255, stdin);
+			fflush(stdin);
 			id = atoi(char_id);
 			if ((floor(log10(abs(id))) + 1) == (strlen(char_id)-1)) { //evaluate if number, atoi will only take the first few integers or 0 and not character
 				if (id <= 9999 || id > 99999) {
