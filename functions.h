@@ -2,6 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+ 
+char * remove_spec(char value[255]) {
+	char *newVal = (char*)malloc(255);
+	int i, j;
+	
+	for (i=0, j=0; i < strlen(value); i++) {
+		if (value[i] >= '0' && value[i] <= '9') {
+			newVal[j] = value[i];
+			j++;
+		}
+	}
+	return newVal;
+}
 
 void remove_quotation(char value[255]) {
 	const char *ptr = value;
@@ -41,15 +54,16 @@ int id_check(int item_id) {
 	FILE * fpointer = fopen("inventory.csv", "r");
 	
 	while (fgets(fItem, 255, fpointer)) {
-		char* token = strtok(fItem, ",");
+		char *token = strtok(fItem, ",");
 		if (token) {
-			remove_quotation(token);
+			token = remove_spec(token);		
 			int n = atoi(token);
 			if (n == item_id) {
 				retVal = 1;
 				break;
 			}
-		}
+		}		
+		free(token);
 	}
 	fclose(fpointer);
 	return retVal;
