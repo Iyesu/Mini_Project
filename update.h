@@ -21,7 +21,7 @@ int totalLines(){
 	return total_lines;
 }
 
-int search(){
+/*int search(){
     FILE *forig = fopen("inventory.csv", "rb");
 	
     int id_line = 0,findID;
@@ -71,7 +71,7 @@ int search(){
     else{
         return lineOfEntry;
     }
-}
+}*/
 
 int update(){
 
@@ -91,7 +91,7 @@ int update(){
     //while(choice=='Y'){
 		countOfLines = totalLines();
 		//printf("entries: %d", countOfLines);
-        lineOfEntry = search();
+        lineOfEntry = search_item(1);
 		printf("%d", lineOfEntry);
         if(lineOfEntry==0){
             printf("\nFailed to find item.\n");

@@ -3,18 +3,21 @@
 #include <string.h>
 #include <math.h>
 
-void search_item() {
+int search_item(int forUpdateFunc) {
 	char fItem[255], char_id[255], choice[80];
 	FILE *fpointer;
 	char *token;
 	fpointer=fopen("inventory.csv","r");
-	int id = 0, found;
+	int id = 0, found, lineofEntry = 0;
 
 	while (choice[0] != 'X') {
-		system("CLS");	
-		printf("SEARCH FOR AN INVENTORY ITEM:\n\n");
+		
+		if(forUpdateFunc==0){
+			system("CLS");
+			printf("SEARCH FOR AN INVENTORY ITEM:\n");
+		}
 		while ((id <= 9999 || id > 99999)) {			
-			printf("Please input the Item ID: ");
+			printf("\nPlease input the Item ID: ");
 			fgets(char_id, 255, stdin);
 			id = atoi(char_id);
 			if ((floor(log10(abs(id))) + 1) == (strlen(char_id)-1)) { //evaluate if number, atoi will only take the first few integers or 0 and not character
@@ -34,10 +37,16 @@ void search_item() {
 		if (item_check == 1) {
 			while (fgets(fItem, 255, fpointer)) 
 			{
+				lineofEntry +=1;
 				token = strtok(fItem, ","); //get the first token
 				token = remove_spec(token);	
 				int item_id = atoi(token);  //convert string to an integer
+
 				if(id == item_id){
+					
+					if(forUpdateFunc==1){
+						printf("\n\nItem found!\n");
+					}
 					printf("ITEM ID\t\tITEM DESCRIPTION\tITEM QUANTITY\tITEM EXPIRY DATE\tITEM PRICE\n");
 					printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 					while(token)
@@ -49,12 +58,26 @@ void search_item() {
 					printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 					printf("\t\t\t\t\t\t\t\t---------------END OF LINE---------------");
 					printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+					if(forUpdateFunc == 1){
+						fclose(fpointer);
+						return lineofEntry;
+					}
 				}
 			}
 		}
 		else{
-		 	printf("\nCannot find Item!");
-			printf("\nThere are no records of an item with the requested Item ID!");
+		 	if(forUpdateFunc == 0){
+				printf("\nCannot find Item!");
+				printf("\nThere are no records of an item with the requested Item ID!");
+			}
+			else{
+				printf("\nFailed to find Item!");
+				printf("\nThe system couldn't find an item with the specified Item ID.");
+				
+				lineofEntry = 0;
+				return lineofEntry;
+			}	
 		}
 		
 		do { //evaluate user input
@@ -73,4 +96,5 @@ void search_item() {
 		}while (choice[0] != 'X');
 	}
 	fclose(fpointer);
+	return 0;
 }
