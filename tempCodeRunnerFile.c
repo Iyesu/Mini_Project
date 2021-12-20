@@ -1,1 +1,1 @@
-		
+toupper(choice[0])
