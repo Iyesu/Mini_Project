@@ -29,6 +29,7 @@ int get_oldID(int lineFound){
 	{
   		if( fgets (line, MAX_LEN, forig)!=NULL ) {
 		  	token = strtok(line, ",");
+			token = remove_spec(token);
 			lineFound -= 1;
 			remove_quotation(token);
 			
@@ -63,7 +64,7 @@ int update(){
             scanf("%c", &choice);
 			fflush(stdin);
 
-            while(choice!='X'){
+            while(toupper(choice)!='X'){
                 printf("\nInvalid Choice.");
                 printf("\n\nInput 'X' to return to the Main Menu:");
 	            scanf(" %c", &choice);
@@ -170,7 +171,7 @@ int update(){
 						printf("\nInput 'X' to return to the Main Menu:");
             			scanf("%c", &choice);
 						fflush(stdin); 
-						while(choice!='X'){
+						while(toupper(choice)!='X'){
                 			printf("\nInvalid Choice.");
                 			printf("\n\nInput 'X' to return to the Main Menu:");
 	            			scanf(" %c", &choice); 
@@ -189,6 +190,7 @@ int update(){
 						//getchar();
 						printf("\nAre you satisfied with the changes? Y/N:");
 						choice=getchar();
+						choice=toupper(choice);
 						fflush(stdin); 
 						//printf("choice: %c", choice);
 						//getchar();
@@ -202,6 +204,7 @@ int update(){
 							printf("\nInvalid input.");
 							printf("\nAre you satisfied with the changes? Y/N:");
 							choice=getchar();
+							choice=toupper(choice);
 							fflush(stdin); 
 							//printf("choice: %c", choice);
 						}
@@ -244,7 +247,7 @@ int update(){
 			printf("Input 'X' to return to the Main Menu:");
             scanf("%c", &choice);
 			fflush(stdin);
-				while(choice!='X'){
+				while(toupper(choice)!='X'){
             		printf("\nInvalid Choice.");
                 	printf("\n\nInput 'X' to return to the Main Menu:");
 	            	scanf(" %c", &choice);
