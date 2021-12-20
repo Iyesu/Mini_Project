@@ -145,7 +145,7 @@ int update(){
 					}
 					while(item_price == 0) {	
 						do {					                                	
-							printf("Please update the Price of the Item (PHP, in TWO decimal places): ");	
+							printf("Please input the Price of the Item (PHP, in TWO decimal places): ");	
 							fgets(char_price, 255, stdin);
 							if (char_price[0] == '\n') {
 								printf("\nPrice of item cannot be empty!\n\n");
@@ -158,6 +158,10 @@ int update(){
 							printf("\nInvalid Price! Make sure the the price is a non-negative, non-zero number and is in TWO decimal places.\n\n");
 						} else {				
 							item_price = atof(char_price);	
+							if (item_price <= 0) {
+								printf("\nInvalid Price! Make sure the the price is a non-negative, non-zero number and is in TWO decimal places.\n\n");
+								item_price = 0;
+							}
 						}
 						fflush(stdin);
 					} 		                           
