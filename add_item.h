@@ -120,6 +120,7 @@ void add_file() {
 			printf("\n\nDo you want to add another item? Y/N: ");
 			fgets(choice, 80, stdin);
 			choice[strcspn(choice, "\n")] = 0;
+			choice[0] = toupper(choice[0]);
 			if (strlen(choice) == 1) {							
 				if (choice[0] != 'Y' && choice[0] != 'N') {
 					printf("\nInvalid choice! Choices are only Y/N!");
