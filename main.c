@@ -37,7 +37,7 @@ void main() {
 				case 'C':
 					//view inventory list
 					viewInventory(1);
-					getch();
+					//getch();
 					break;
 				case 'D':
 					//search for an inventory item
