@@ -4,8 +4,6 @@
 #include <ctype.h>
 #define MAX_LEN 255
 
-int old_id=0;
-
 int totalLines(){
 	int total_lines =0;
 
@@ -21,61 +19,28 @@ int totalLines(){
 	return total_lines;
 }
 
-/*int search(){
+int get_oldID(int lineFound){
     FILE *forig = fopen("inventory.csv", "rb");
 	
-    int id_line = 0,findID;
     char line[MAX_LEN];
-    char *token,*IDStr;
-    char *dump;
-    char currentID[6];
-    char checkID[6]="\"";
+    char *token;
 
-    printf("\nPlease input the Item ID:");
-	scanf("%d", &findID);
-	old_id = findID;
-	fflush(stdin);
-	
-    int lineOfEntry =0;
-    while(!feof(forig))
+    while(lineFound!=0)
 	{
   		if( fgets (line, MAX_LEN, forig)!=NULL ) {
-            
-            token = strtok(line, ",");
+		  	token = strtok(line, ",");
+			lineFound -= 1;
 			remove_quotation(token);
-			lineOfEntry+=1;
-            if(findID==atoi(token)){
-                printf("\nItem Found!\n");
-				printf("ITEM ID   ITEM DESCRIPTION    	ITEM QUANTITY   	ITEM EXPIRY DATE   	ITEM PRICE\n");
-				printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-				while(token != NULL)
-					{
-						printf("%s\t\t", token);
-						token = strtok(NULL, ",");
-					}
-						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-						printf("\t\t\t\t\t\t\t\t---------------END OF LINE---------------");
-						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-                		fclose(forig);
-						return lineOfEntry;
-            }
-        }
+			
+		  }
     }
-	lineOfEntry=0;
-    fclose(forig);
-
-    if(lineOfEntry==0){
-        printf("Error: Item does not exist.");
-        return 0;
-    }
-    else{
-        return lineOfEntry;
-    }
-}*/
+	fclose(forig);
+	return atoi(token);
+}
 
 int update(){
 
-    int item_id = 0, item_quantity = 0, item_check, price_check = 0;
+    int item_id = 0, item_quantity = 0, item_check, price_check = 0, old_id=0;;
 	char item_description[255], item_date[255], char_id[255], char_quantity[255], char_price[255], choice = 'N';
 	float item_price = 0;
 
@@ -92,18 +57,17 @@ int update(){
 		countOfLines = totalLines();
 		//printf("entries: %d", countOfLines);
         lineOfEntry = search_item(1);
-		printf("%d", lineOfEntry);
+		//printf("%d", lineOfEntry);
         if(lineOfEntry==0){
-            printf("\nFailed to find item.\n");
-            printf("The system couldn't find an item with the specified Item ID.\n");
-
-            printf("Input 'X' to return to the Main Menu:");
+            printf("\nInput 'X' to return to the Main Menu:");
             scanf("%c", &choice);
+			fflush(stdin);
 
             while(choice!='X'){
                 printf("\nInvalid Choice.");
                 printf("\n\nInput 'X' to return to the Main Menu:");
-	            scanf(" %c", &choice); 
+	            scanf(" %c", &choice);
+				fflush(stdin); 
             }
 			return 0;
         }
@@ -198,10 +162,12 @@ int update(){
 					} 		                           
 	
 		        	int item_check = id_check(item_id);
+					old_id = get_oldID(lineOfEntry);
+
 		
 		        	if (item_check == 1 && old_id != item_id) {
 			        	printf("\nFailed to add item!\nItem with the same Item ID found!");
-						printf("Input 'X' to return to the Main Menu:");
+						printf("\nInput 'X' to return to the Main Menu:");
             			scanf("%c", &choice);
 						fflush(stdin); 
 						while(choice!='X'){
@@ -277,8 +243,7 @@ int update(){
             printf("\nInventory Entry Updated Succesfully\n");
 			printf("Input 'X' to return to the Main Menu:");
             scanf("%c", &choice);
-			fflush(stdin); 
-			getchar();
+			fflush(stdin);
 				while(choice!='X'){
             		printf("\nInvalid Choice.");
                 	printf("\n\nInput 'X' to return to the Main Menu:");
@@ -291,7 +256,6 @@ int update(){
             printf("Error Updating Entry. CSV File might be open or still in use.\n");
 		    system("pause");
         }
-    printf("\n\n");
 
 	return 0;
 }
