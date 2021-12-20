@@ -26,7 +26,7 @@ void main() {
 		//scanf(" %s%*[ \t]", &choice);	
 		fflush(stdin);
 		if (strlen(choice) == 1) {
-			switch(choice[0]) {	
+			switch(toupper(choice[0])) {	
 				case 'A':						
 					add_file();
 					break;

@@ -6,10 +6,27 @@
 int search_item(int forUpdateFunc) {
 	char fItem[255], char_id[255], choice[80];
 	FILE *fpointer;
-	char *token;
-	fpointer=fopen("inventory.csv","r");
+	char *token;	
 	int id = 0, found, lineofEntry = 0;
-
+	
+	if (!(fpointer=fopen("inventory.csv","r"))) {
+		printf("\nError! Cannot find the file where inventory items are stored.");
+		do { //evaluate user input
+			printf("\n\nInput 'X' to return to the main menu: ");
+			fgets(choice, 80, stdin);
+			choice[strcspn(choice, "\n")] = 0;
+			if (strlen(choice) == 1) {							
+				if (choice[0] != 'X') {
+					printf("\nInvalid choice! Please input 'X' to return to the main menu!");
+				}
+			} else {
+				printf("\nInvalid choice! Please input 'X' to return to the main menu!");
+				choice[0] = '0';
+			}			
+			fflush(stdin);	
+		}while (choice[0] != 'X');
+	}
+	
 	while (choice[0] != 'X') {
 		
 		if(forUpdateFunc==0){

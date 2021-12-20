@@ -16,26 +16,27 @@ void viewInventory(int option){
 	}
 	
 	FILE *fp;
-	fp=fopen("Inventory_ST_NoBOM.csv","r");
+	fp=fopen("inventory.csv","r");
 	//checks if file is empty, will exit when it is
 	if (NULL != fp) {
     	fseek (fp, 0, SEEK_END);
     	size = ftell(fp);
 	}
     if (0 == size) {
-        printf("\n\nCannot display item list!\n");
+        printf("\nCannot display item list!\n");
         printf("Inventory list is empty!\n\n");
         while(1){
         	printf("Input 'X' to return to the main menu: ");
 			scanf(" %c",&exit);
         	printf("\n");
+        	fflush(stdin);
         	if(exit=='x'||exit=='X'){
         		return;
 			}
 		}
 	}
 	fclose(fp);
-	fp=fopen("Inventory_ST_NoBOM.csv","r");
+	fp=fopen("inventory.csv","r");
 	
 	printf("\n%-40s%-40s%-40s%-40s%s","Item ID","Item Description","Quantity","Expiration Date","Price(PHP)");
 	printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
