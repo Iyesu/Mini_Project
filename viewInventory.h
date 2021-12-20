@@ -8,7 +8,7 @@ void viewInventory(int option){
 	int i, word_count=0,flag=0,ch_cmp,size;
 	//words store each word of the file, id is the string equivalent of the id number, exit stores exit character 
     //in the event of an error
-	char words[50],id[5], ch, exit; 
+	char words[50],id[5], ch, exit, choice[80]; 
 	
 	if(option==1){
 		system("CLS");
@@ -104,4 +104,19 @@ void viewInventory(int option){
 	printf("\t\t\t\t\t\t\t\t---------------END OF LINE---------------");
 	printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 	fclose(fp);
+	
+	do { //evaluate user input
+		printf("\n\nInput 'X' to return to the main menu: ");
+		fgets(choice, 80, stdin);
+		choice[strcspn(choice, "\n")] = 0;
+		if (strlen(choice) == 1) {							
+			if (choice[0] != 'X') {
+				printf("\nInvalid choice! Please input 'X' to return to the main menu!");
+			}
+		} else {
+			printf("\nInvalid choice! Please input 'X' to return to the main menu!");
+			choice[0] = '0';
+		}			
+		fflush(stdin);	
+	}while (choice[0] != 'X');
 }
