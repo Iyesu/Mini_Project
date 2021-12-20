@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
 #define MAX_LEN 255
 
 int old_id=0;
@@ -22,8 +21,7 @@ int totalLines(){
 	return total_lines;
 }
 
-/*
-int search(){
+/*int search(){
     FILE *forig = fopen("inventory.csv", "rb");
 	
     int id_line = 0,findID;
@@ -94,7 +92,7 @@ int update(){
 		countOfLines = totalLines();
 		//printf("entries: %d", countOfLines);
         lineOfEntry = search_item(1);
-		//printf("%d", lineOfEntry);
+		printf("%d", lineOfEntry);
         if(lineOfEntry==0){
             printf("\nFailed to find item.\n");
             printf("The system couldn't find an item with the specified Item ID.\n");
@@ -294,7 +292,6 @@ int update(){
 		    system("pause");
         }
     printf("\n\n");
-	fflush(stdin); 
 
 	return 0;
 }
