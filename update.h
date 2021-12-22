@@ -55,6 +55,23 @@ int update(){
 	printf("UPDATE INVENTORY ITEM:\n");
 	
     //while(choice=='Y'){
+		if (!originalFile) {
+			
+			printf("\nError! Cannot find the file where inventory items are stored.");
+			printf("\nInput 'X' to return to the Main Menu:");
+			choice=getchar();
+			choice=toupper(choice);
+			fflush(stdin); 
+						
+			while(choice!='X'){
+				printf("\nInvalid input.");
+				printf("\nInput 'X' to return to the Main Menu:");
+				choice=getchar();
+				choice=toupper(choice);
+				fflush(stdin); 
+			}
+			return 0;
+		}
 		countOfLines = totalLines();
 		//printf("entries: %d", countOfLines);
         lineOfEntry = search_item(1);
@@ -145,7 +162,7 @@ int update(){
 					}
 					while(item_price == 0) {	
 						do {					                                	
-							printf("Please input the Price of the Item (PHP, in TWO decimal places): ");	
+							printf("Please update the Price of the Item (PHP, in TWO decimal places): ");	
 							fgets(char_price, 255, stdin);
 							if (char_price[0] == '\n') {
 								printf("\nPrice of item cannot be empty!\n\n");
@@ -185,9 +202,9 @@ int update(){
 		        	} else {
 				    
 						printf("\nITEM UPDATE SUMMARY\n");
-						printf("ITEM ID   ITEM DESCRIPTION    	ITEM QUANTITY   	ITEM EXPIRY DATE   	ITEM PRICE\n");
-						printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-						printf("%d\t\t%s\t\t%d\t\t%s\t\t%lf", item_id, item_description, item_quantity, item_date, item_price);
+						printf("\n%-40s%-40s%-40s%-40s%s","Item ID","Item Description","Quantity","Expiration Date","Price(PHP)");
+						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+						printf("%-40d%-40s%-40d%-40s%-40.2f", item_id, item_description, item_quantity, item_date, item_price);
 						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 						printf("\t\t\t\t\t\t\t\t---------------END OF LINE---------------");
 						printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
