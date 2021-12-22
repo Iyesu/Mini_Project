@@ -7,7 +7,7 @@
 
 void add_file() {
 	int item_id, item_quantity = 0, item_check, price_check = 0;
-	char item_description[255], item_date[255], char_id[255], char_quantity[255], char_price[255], choice[80];
+	char item_description[40], item_date[255], char_id[255], char_quantity[255], char_price[255], choice[80];
 	float item_price = 0;
 	
 	choice[0] = 'Y';
@@ -34,7 +34,7 @@ void add_file() {
 		}
 		do {
 			printf("Please input the Item Description: ");		
-			fgets(item_description, 255, stdin); //fix the newline bug later
+			fgets(item_description, 40, stdin); //fix the newline bug later
 			if (item_description[0] != '\n') {
 				item_description[strcspn(item_description, "\n")] = 0; //remove fgets \n
 				remove_comma(item_description);

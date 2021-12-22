@@ -12,7 +12,7 @@ void main() {
 	int result_check;
 	char choice[80];
 	
-	while (choice[0] != 'X') {
+	while (toupper(choice[0]) != 'X') {
 		system("CLS");
 		printf("MAIN MENU:\n");
 		printf("[A] Add Inventory Item\n");
