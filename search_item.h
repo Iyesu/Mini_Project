@@ -66,12 +66,12 @@ int search_item(int forUpdateFunc) {
 					if(forUpdateFunc==1){
 						printf("\n\nItem found!\n");
 					}
-					printf("ITEM ID\t\tITEM DESCRIPTION\tITEM QUANTITY\tITEM EXPIRY DATE\tITEM PRICE\n");
-					printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+					printf("\n%-40s%-40s%-40s%-40s%s","Item ID","Item Description","Quantity","Expiration Date","Price(PHP)");
+					printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 					while(token)
 					{												
 						remove_quotation(token);						
-						printf("%s\t\t", token);
+						printf("%-40s", token);
 						token = strtok(NULL, ",");
 					}
 					printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
